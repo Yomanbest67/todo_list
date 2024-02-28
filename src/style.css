@@ -1,0 +1,13 @@
+.task {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.projForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
