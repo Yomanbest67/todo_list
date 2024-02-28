@@ -1,4 +1,4 @@
-import { toDos, updateScreen, setToDos } from "./index.js";
+import { toDos, removeToDo, updateScreen, setToDos } from "./index.js";
 
 const tasks = document.querySelector('.tasks');
 
@@ -38,7 +38,7 @@ function createTodoDiv (todo) {
     deleteBtn.textContent = "Delete Task";
     deleteBtn.addEventListener('click', () => {
         taskDiv.remove();
-        setToDos(removeArrayItem(todo, toDos));
+        removeToDo(todo);
     });
 
     taskDescDiv.appendChild(taskTitle);
@@ -57,10 +57,6 @@ function createObject(title, description, dueDate, priority, project) {
     toDos.push(todo);
     updateScreen();
 };
-
-function removeArrayItem (item, array) {
-    array.splice(array.indexOf(item), 1);
-}
 
 
 export {toDo, createTodoDiv, createObject}

@@ -159,4 +159,9 @@ function setToDos(newVal) {
     toDos = newVal;
 }
 
-export {toDos, projects, tasks, updateScreen, clearScreen, selectProject, setToDos, updateToDoProjectsList, projectsDiv}
+function removeToDo (item) {
+    toDos.splice(toDos.indexOf(item), 1);
+}
+
+
+export {toDos, projects, tasks, removeToDo, updateScreen, clearScreen, selectProject, setToDos, updateToDoProjectsList, projectsDiv}
