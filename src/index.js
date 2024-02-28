@@ -5,28 +5,50 @@ import {createProjectDiv, createProject} from './createProject.js';
 
 const tasks = document.querySelector('.tasks');
 const sidebar = document.querySelector('.sidebar');
+const projectsDiv = document.querySelector('.projects');
 const projects = [];
 const toDos = [];
 
 // Function to load the ToDos from LocalStorage
 
 // Call the ToDo modules
+const taskDialog = document.querySelector('.taskDialog');
 
-
-(function createToDoDialog() {
+(function createTaskButton() {
+    createToDoDialog();
     const newTaskBtn = document.querySelector('.newTask');
-    const taskDialog = document.querySelector('.taskDialog');
+
+    newTaskBtn.addEventListener('click', () => {
+        taskDialog.showModal();
+    });
+
+})();
+
+function createToDoDialog() {
+    
     const closeBtn = document.querySelector('.close');
     const addTaskBtn = document.querySelector('.taskCreate');
+
+    // Select Project 
+    const selectProjectDiv = document.createElement('div');
+    const selectProjectLabel = document.createElement('label');
+    const selectProjectList = document.createElement('select');
+
+    selectProjectLabel.textContent = 'Add to Project:';
+    selectProjectList.classList.add('selectProject');
+
+    selectProjectDiv.appendChild(selectProjectLabel);
+    selectProjectDiv.appendChild(selectProjectList);
+    taskDialog.appendChild(selectProjectDiv);
+
+    updateToDoProjectsList();
+
+    ////////////////////////////////////////////////////////////
 
     const title = document.querySelector('.title');
     const description = document.querySelector('.description');
     const priority = document.querySelector('.priority');
     const dueDate = document.querySelector('.due');
-    
-    newTaskBtn.addEventListener('click', () => {
-        taskDialog.showModal();
-    });
 
     closeBtn.addEventListener('click', (event) => {
         event.preventDefault();
@@ -40,7 +62,7 @@ const toDos = [];
     });
 
 
-})();
+};
 
 (function createProjectDialog() {
     // Buttons
@@ -83,6 +105,7 @@ const toDos = [];
     addProjBtn.addEventListener('click', (event) => {
         event.preventDefault();
         createProject(inputName.value, inputDesc.value);
+        updateToDoProjects();
         projDialog.close();
     });
 
@@ -101,6 +124,10 @@ function clearScreen () {
     while (tasks.firstChild) {
         tasks.firstChild.remove();
     }
+
+    while (projectsDiv.firstChild) {
+        projectsDiv.firstChild.remove();
+    }
 }
 
 function updateScreen () {
@@ -108,6 +135,28 @@ function updateScreen () {
 
     for (let object of toDos){
         tasks.appendChild(createTodoDiv(object));
+    };
+
+    for (let project of projects){
+        projectsDiv.appendChild(createProjectDiv(project));
+    };
+};
+
+function updateToDoProjectsList () {
+    const options = document.querySelector('.selectProject');
+
+
+    while (options.firstChild){
+        options.firstChild.remove();
+    }
+    
+
+    for (let project of projects) {
+        const option = document.createElement('option');
+        option.value = `${project.name}`;
+        option.textContent = `${project.name}`;
+
+        options.appendChild(option);
     }
 };
 

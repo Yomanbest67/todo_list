@@ -11,3 +11,10 @@
     flex-direction: column;
     gap: 10px;
 }
+
+.project {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 5px;
+}

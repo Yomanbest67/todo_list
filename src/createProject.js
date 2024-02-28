@@ -20,14 +20,16 @@ function createProjectDiv(project) {
     const projTitle = document.createElement('h2');
     const projDesc = document.createElement('p');
 
+    projDiv.classList.add('project');
     projTitle.textContent = project.name;
     projDesc.textContent = project.description;
 
     projDiv.appendChild(projTitle);
     projDiv.appendChild(projDesc);
 
-    return projDiv;
-}
+
+    return projDiv
+};
 
 function createProject(name, description) {
     const project = new Project(name, description);
