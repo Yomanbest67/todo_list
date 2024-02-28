@@ -17,4 +17,9 @@
     flex-direction: column;
     border: 1px solid black;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+.project:hover {
+    background-color: rgb(240, 236, 236);
 }

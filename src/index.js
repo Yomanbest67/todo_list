@@ -1,18 +1,22 @@
 import css from './style.css';
-import {createObject, createTodoDiv} from './createToDo.js';
-import {createProjectDiv, createProject} from './createProject.js';
+import {createObject, createTodoDiv, toDo} from './createToDo.js';
+import {createProjectDiv, createProject, Project} from './createProject.js';
 
 
 const tasks = document.querySelector('.tasks');
 const sidebar = document.querySelector('.sidebar');
 const projectsDiv = document.querySelector('.projects');
-const projects = [];
-const toDos = [];
+const defaultProj = new Project('Default', 'Default list of Todos');
+const projects = [defaultProj];
+let toDos = [];
+let selectedProject = defaultProj;
 
 // Function to load the ToDos from LocalStorage
 
 // Call the ToDo modules
 const taskDialog = document.querySelector('.taskDialog');
+
+updateScreen();
 
 (function createTaskButton() {
     createToDoDialog();
@@ -28,27 +32,11 @@ function createToDoDialog() {
     
     const closeBtn = document.querySelector('.close');
     const addTaskBtn = document.querySelector('.taskCreate');
-
-    // Select Project 
-    const selectProjectDiv = document.createElement('div');
-    const selectProjectLabel = document.createElement('label');
-    const selectProjectList = document.createElement('select');
-
-    selectProjectLabel.textContent = 'Add to Project:';
-    selectProjectList.classList.add('selectProject');
-
-    selectProjectDiv.appendChild(selectProjectLabel);
-    selectProjectDiv.appendChild(selectProjectList);
-    taskDialog.appendChild(selectProjectDiv);
-
-    updateToDoProjectsList();
-
-    ////////////////////////////////////////////////////////////
-
     const title = document.querySelector('.title');
     const description = document.querySelector('.description');
     const priority = document.querySelector('.priority');
     const dueDate = document.querySelector('.due');
+    const selectProjectList = document.querySelector('#selectProject');
 
     closeBtn.addEventListener('click', (event) => {
         event.preventDefault();
@@ -57,12 +45,13 @@ function createToDoDialog() {
 
     addTaskBtn.addEventListener('click', (event) => {
         event.preventDefault();
-        createObject(title, description, dueDate, priority);
+        createObject(title, description, dueDate, priority, selectProjectList);
         taskDialog.close();
     });
 
 
 };
+
 
 (function createProjectDialog() {
     // Buttons
@@ -105,7 +94,7 @@ function createToDoDialog() {
     addProjBtn.addEventListener('click', (event) => {
         event.preventDefault();
         createProject(inputName.value, inputDesc.value);
-        updateToDoProjects();
+        updateToDoProjectsList();
         projDialog.close();
     });
 
@@ -134,7 +123,9 @@ function updateScreen () {
     clearScreen();
 
     for (let object of toDos){
-        tasks.appendChild(createTodoDiv(object));
+        if (object.project == selectedProject.name){
+            tasks.appendChild(createTodoDiv(object));
+        }
     };
 
     for (let project of projects){
@@ -143,7 +134,7 @@ function updateScreen () {
 };
 
 function updateToDoProjectsList () {
-    const options = document.querySelector('.selectProject');
+    const options = document.querySelector('#selectProject');
 
 
     while (options.firstChild){
@@ -160,4 +151,12 @@ function updateToDoProjectsList () {
     }
 };
 
-export {toDos, projects, updateScreen}
+function selectProject(object) {
+    selectedProject = object;
+}
+
+function setToDos(newVal) {
+    toDos = newVal;
+}
+
+export {toDos, projects, tasks, updateScreen, clearScreen, selectProject, setToDos, updateToDoProjectsList, projectsDiv}

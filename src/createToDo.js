@@ -1,13 +1,14 @@
-import { toDos, updateScreen } from "./index.js";
+import { toDos, updateScreen, setToDos } from "./index.js";
 
 const tasks = document.querySelector('.tasks');
 
 class toDo {
-    constructor(title, description, dueDate, priority) {
+    constructor(title, description, dueDate, priority, project) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.project = project;
     }
 
     set changeDate(date) {
@@ -37,7 +38,7 @@ function createTodoDiv (todo) {
     deleteBtn.textContent = "Delete Task";
     deleteBtn.addEventListener('click', () => {
         taskDiv.remove();
-        toDos = removeArrayItem(todo, toDos);
+        setToDos(removeArrayItem(todo, toDos));
     });
 
     taskDescDiv.appendChild(taskTitle);
@@ -50,8 +51,8 @@ function createTodoDiv (todo) {
     return taskDiv
 }
 
-function createObject(title, description, dueDate, priority) {
-    const todo = new toDo(title.value, description.value, dueDate.value, priority.value);
+function createObject(title, description, dueDate, priority, project) {
+    const todo = new toDo(title.value, description.value, dueDate.value, priority.value, project.value);
 
     toDos.push(todo);
     updateScreen();
