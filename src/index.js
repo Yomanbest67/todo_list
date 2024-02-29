@@ -8,12 +8,8 @@ const sidebar = document.querySelector('.sidebar');
 const projectsDiv = document.querySelector('.projects');
 const defaultProj = new Project('Default', 'Default list of Todos');
 const projects = [defaultProj];
-let toDos = [];
 let selectedProject = defaultProj;
 
-// Function to load the ToDos from LocalStorage
-
-// Call the ToDo modules
 const taskDialog = document.querySelector('.taskDialog');
 
 updateScreen();
@@ -122,10 +118,8 @@ function clearScreen () {
 function updateScreen () {
     clearScreen();
 
-    for (let object of toDos){
-        if (object.project == selectedProject.name){
-            tasks.appendChild(createTodoDiv(object));
-        }
+    for (let object of selectedProject.todos){
+        tasks.appendChild(createTodoDiv(object));
     };
 
     for (let project of projects){
@@ -155,13 +149,5 @@ function selectProject(object) {
     selectedProject = object;
 }
 
-function setToDos(newVal) {
-    toDos = newVal;
-}
 
-function removeToDo (item) {
-    toDos.splice(toDos.indexOf(item), 1);
-}
-
-
-export {toDos, projects, tasks, removeToDo, updateScreen, clearScreen, selectProject, setToDos, updateToDoProjectsList, projectsDiv}
+export {projects, tasks, updateScreen, clearScreen, selectProject, updateToDoProjectsList, projectsDiv}

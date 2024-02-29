@@ -1,4 +1,5 @@
-import { toDos, removeToDo, updateScreen, setToDos } from "./index.js";
+import { updateScreen, projects } from "./index.js";
+import { projectsPush, projectsRemove } from "./createProject.js";
 
 const tasks = document.querySelector('.tasks');
 
@@ -11,8 +12,26 @@ class toDo {
         this.project = project;
     }
 
+    set changeTitle(title) {
+        this.title = title;
+    }
+
+    set changeDescription(desc) {
+        this.description = desc;
+    }
+
     set changeDate(date) {
         this.dueDate = validate(date);
+    }
+
+    set changePriority(priority) {
+        this.priority = priority;
+    }
+
+    set changeProject(project) {
+        projectsRemove(this);
+        this.project = project;
+        projectsPush(this);
     }
 
 }
@@ -24,7 +43,7 @@ function createTodoDiv (todo) {
     const taskDesc = document.createElement('p');
     const taskDescDiv = document.createElement('div');
     const taskDue = document.createElement('div');
-    const deleteBtn = document.createElement('button');
+    const dropDown = dropdown();
 
     taskDiv.classList.add('task');
     taskTitle.classList.add('title');
@@ -35,18 +54,12 @@ function createTodoDiv (todo) {
     taskDesc.textContent = todo.description;
     taskDue.textContent = todo.dueDate;
 
-    deleteBtn.textContent = "Delete Task";
-    deleteBtn.addEventListener('click', () => {
-        taskDiv.remove();
-        removeToDo(todo);
-    });
-
     taskDescDiv.appendChild(taskTitle);
     taskDescDiv.appendChild(taskDesc);
 
     taskDiv.appendChild(taskDescDiv);
     taskDiv.appendChild(taskDue);
-    taskDiv.appendChild(deleteBtn);
+    taskDiv.appendChild(dropDown);
 
     return taskDiv
 }
@@ -54,8 +67,50 @@ function createTodoDiv (todo) {
 function createObject(title, description, dueDate, priority, project) {
     const todo = new toDo(title.value, description.value, dueDate.value, priority.value, project.value);
 
-    toDos.push(todo);
+    for (let object of projects) {
+        if (object.name == project.value) {
+            object.pushTodo(todo);
+        }
+    };
+
     updateScreen();
+};
+
+
+function dropdown (todo) {
+    // Elements
+    const taskDiv = document.createElement('div');
+    const hoverBtn = document.createElement('button');
+    const dropContent = document.createElement('div');
+    const nameBtn = document.createElement('button');
+    const descBtn = document.createElement('button');
+    const dateBtn = document.createElement('button');
+    const prioBtn = document.createElement('button');
+    const projBtn = document.createElement('button');
+
+    const elements = [nameBtn, descBtn, dateBtn, prioBtn, projBtn];
+
+    // Text Content
+    hoverBtn.textContent = 'Options';
+    nameBtn.textContent = 'Change Name';
+    descBtn.textContent = 'Change Description';
+    dateBtn.textContent = 'Change Due Date';
+    prioBtn.textContent = 'Change Priority';
+    projBtn.textContent = 'Change Project';
+
+    // ClassList
+    taskDiv.classList.add('dropdown');
+    dropContent.classList.add('dropdown-content');
+
+    // Append
+    for (let element of elements){
+        dropContent.appendChild(element);
+    }
+
+    taskDiv.appendChild(hoverBtn);
+    taskDiv.appendChild(dropContent);
+
+    return taskDiv;
 };
 
 
