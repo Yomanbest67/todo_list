@@ -157,43 +157,31 @@ function dropdownDialog (button, todo) {
     });
 
     dialogAdd.addEventListener('click', (event) => {
+        event.preventDefault();
         switch (button.textContent) {
 
             case 'Change Name':
-                event.preventDefault();
                 todo.changeTitle(dialogInput.value);
-                updateScreen();
-                dialog.remove();
                 break;
 
             case 'Change Description':
-                event.preventDefault();
                 todo.changeDescription(dialogInput.value);
-                updateScreen();
-                dialog.remove();
                 break;
 
             case 'Change Due Date':
-                event.preventDefault();
                 todo.changeDate(dialogInput.value);
-                updateScreen();
-                dialog.remove();
                 break;
 
             case 'Change Priority':
-                event.preventDefault();
                 todo.changePriority(dialogInput.value);
-                updateScreen();
-                dialog.remove();
                 break;
 
             case 'Change Project':
-                event.preventDefault();
                 todo.changeProject(dialogInput.value);
-                updateScreen();
-                dialog.remove();
                 break;
         }
+        updateScreen();
+        dialog.remove();
     });
 
     // Append
