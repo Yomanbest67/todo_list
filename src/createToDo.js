@@ -185,7 +185,7 @@ function dropdownDialog (button, todo) {
     });
 
     // Append
-    const elements = [dialogLabel, dialogInput, dialogClose, dialogAdd];
+    const elements = [dialogClose, dialogLabel, dialogInput, dialogAdd];
     for (let element of elements) {
         dialogDiv.appendChild(element);
     }
