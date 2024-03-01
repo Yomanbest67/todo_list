@@ -12,23 +12,23 @@ class toDo {
         this.project = project;
     }
 
-    set changeTitle(title) {
+    changeTitle(title) {
         this.title = title;
     }
 
-    set changeDescription(desc) {
+    changeDescription(desc) {
         this.description = desc;
     }
 
-    set changeDate(date) {
-        this.dueDate = validate(date);
+    changeDate(date) {
+        this.dueDate = date;
     }
 
-    set changePriority(priority) {
+    changePriority(priority) {
         this.priority = priority;
     }
 
-    set changeProject(project) {
+    changeProject(project) {
         projectsRemove(this);
         this.project = project;
         projectsPush(this);
@@ -43,7 +43,7 @@ function createTodoDiv (todo) {
     const taskDesc = document.createElement('p');
     const taskDescDiv = document.createElement('div');
     const taskDue = document.createElement('div');
-    const dropDown = dropdown();
+    const dropDown = dropdown(todo);
 
     taskDiv.classList.add('task');
     taskTitle.classList.add('title');
@@ -102,6 +102,11 @@ function dropdown (todo) {
     taskDiv.classList.add('dropdown');
     dropContent.classList.add('dropdown-content');
 
+    // Buttons Functions
+    for (let button of elements) {
+        button.addEventListener('click', () => {dropdownDialog(button, todo)});
+    }
+
     // Append
     for (let element of elements){
         dropContent.appendChild(element);
@@ -112,6 +117,95 @@ function dropdown (todo) {
 
     return taskDiv;
 };
+
+function dropdownDialog (button, todo) {
+    // Elements
+    const dialog = document.createElement('dialog');
+    const dialogDiv = document.createElement('div');
+    const dialogLabel = document.createElement('label');
+    let dialogInput; // Defined Bellow
+    const dialogClose = document.createElement('button');
+    const dialogAdd = document.createElement('button');
+    
+
+    // Text Content
+    dialogLabel.textContent = button.textContent;
+    dialogAdd.textContent = 'Change';
+    dialogClose.textContent = 'X';
+
+    // Function
+    switch (button.textContent) {
+        case 'Change Due Date':
+            dialogInput = document.createElement('input');
+            dialogInput.type = "date";
+            break;
+
+        case 'Change Project':
+            // Clone the existing Project List from Index.js as it is automatically updated.
+            let projectListElement = document.querySelector('.selectProject');
+            dialogInput = projectListElement.cloneNode(true);
+            break;
+
+        default:
+            dialogInput = document.createElement('input');
+            break;
+    }
+
+    dialogClose.addEventListener('click', (event) => {
+        event.preventDefault();
+        dialog.remove();
+    });
+
+    dialogAdd.addEventListener('click', (event) => {
+        switch (button.textContent) {
+
+            case 'Change Name':
+                event.preventDefault();
+                todo.changeTitle(dialogInput.value);
+                updateScreen();
+                dialog.remove();
+                break;
+
+            case 'Change Description':
+                event.preventDefault();
+                todo.changeDescription(dialogInput.value);
+                updateScreen();
+                dialog.remove();
+                break;
+
+            case 'Change Due Date':
+                event.preventDefault();
+                todo.changeDate(dialogInput.value);
+                updateScreen();
+                dialog.remove();
+                break;
+
+            case 'Change Priority':
+                event.preventDefault();
+                todo.changePriority(dialogInput.value);
+                updateScreen();
+                dialog.remove();
+                break;
+
+            case 'Change Project':
+                event.preventDefault();
+                todo.changeProject(dialogInput.value);
+                updateScreen();
+                dialog.remove();
+                break;
+        }
+    });
+
+    // Append
+    const elements = [dialogLabel, dialogInput, dialogClose, dialogAdd];
+    for (let element of elements) {
+        dialogDiv.appendChild(element);
+    }
+
+    dialog.appendChild(dialogDiv);
+    document.querySelector('body').appendChild(dialog);
+    dialog.showModal();
+}
 
 
 export {toDo, createTodoDiv, createObject}

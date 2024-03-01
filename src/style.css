@@ -41,13 +41,13 @@
 .dropdown:hover .dropdown-content {
     display: block; 
     padding: 10px;
+    z-index: 2;
 }
 
 .dropdown-content button {
     display: block;
     color: #000000;
     padding: 5px;
-    text-decoration: none;
 }
 
 .dropdown-content button:hover {

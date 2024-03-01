@@ -32,7 +32,7 @@ function createToDoDialog() {
     const description = document.querySelector('.description');
     const priority = document.querySelector('.priority');
     const dueDate = document.querySelector('.due');
-    const selectProjectList = document.querySelector('#selectProject');
+    const selectProjectList = document.querySelector('.selectProject');
 
     closeBtn.addEventListener('click', (event) => {
         event.preventDefault();
@@ -128,7 +128,7 @@ function updateScreen () {
 };
 
 function updateToDoProjectsList () {
-    const options = document.querySelector('#selectProject');
+    const options = document.querySelector('.selectProject');
 
 
     while (options.firstChild){
