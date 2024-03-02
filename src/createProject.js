@@ -147,13 +147,12 @@ function dropDownDialog (button, project) {
 
 ////// Global Index.JS Projects iterating functions.
 function projectsPush(item) {
-
+    
     for (let object of projects) {
         if (object.name == item.project) {
             object.pushTodo(item);
         }
     }
-
 }
 
 function projectsRemove(item) {

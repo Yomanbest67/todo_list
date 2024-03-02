@@ -1,14 +1,21 @@
 import css from './style.css';
 import {createObject, createTodoDiv, toDo} from './createToDo.js';
-import {createProjectDiv, createProject, Project} from './createProject.js';
+import {createProjectDiv, createProject, Project, projectsPush} from './createProject.js';
+import {systemCheck, populateStorage} from './localStorage.js';
 
 
 const tasks = document.querySelector('.tasks');
 const sidebar = document.querySelector('.sidebar');
 const projectsDiv = document.querySelector('.projects');
+
+
+
 const defaultProj = new Project('Default', 'Default list of Todos');
 const projects = [defaultProj];
 let selectedProject = defaultProj;
+
+systemCheck();
+
 
 const taskDialog = document.querySelector('.taskDialog');
 
@@ -149,5 +156,11 @@ function selectProject(object) {
     selectedProject = object;
 }
 
+////// Push new Project
 
-export {projects, tasks, updateScreen, clearScreen, selectProject, updateToDoProjectsList, projectsDiv}
+function newProjectPush(project) {
+    projects.push(project);
+}
+
+
+export {projects, tasks, updateScreen, clearScreen, selectProject, updateToDoProjectsList, projectsDiv, newProjectPush}

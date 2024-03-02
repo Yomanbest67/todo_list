@@ -1,5 +1,6 @@
 import { updateScreen, projects } from "./index.js";
 import { projectsPush, projectsRemove } from "./createProject.js";
+import { populateStorage } from "./localStorage.js";
 
 const tasks = document.querySelector('.tasks');
 
@@ -74,6 +75,7 @@ function createObject(title, description, dueDate, priority, project) {
     };
 
     updateScreen();
+    populateStorage();
 };
 
 
