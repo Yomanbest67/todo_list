@@ -1,4 +1,4 @@
-import { projects, updateScreen, selectProject, updateToDoProjectsList } from "./index.js";
+import { projects, updateScreen, selectProject, updateToDoProjectsList, removeProject } from "./index.js";
 import { createTodoDiv } from "./createToDo.js";
 
 class Project {
@@ -72,11 +72,13 @@ function dropDown (project) {
     const dropContent = document.createElement('div');
     const nameBtn = document.createElement('button');
     const descBtn = document.createElement('button');
+    const deleteBtn = document.createElement('button');
 
     // Text Content
     hoverBtn.textContent = 'Options';
     nameBtn.textContent = 'Change Name';
     descBtn.textContent = 'Change Description';
+    deleteBtn.textContent = 'Delete';
 
     // ClassList
     taskDiv.classList.add('dropdown');
@@ -87,9 +89,12 @@ function dropDown (project) {
         button.addEventListener('click', () => dropDownDialog(button, project));
     };
 
+    deleteBtn.addEventListener('click', () => removeProject(project));
+
     // Append
     dropContent.appendChild(nameBtn);
     dropContent.appendChild(descBtn);
+    dropContent.appendChild(deleteBtn);
 
     taskDiv.appendChild(hoverBtn);
     taskDiv.appendChild(dropContent);
@@ -128,7 +133,6 @@ function dropDownDialog (button, project) {
             case 'Change Description':
                 project.changeDescription(dialogInput.value);
                 break;
-
         }
         updateScreen();
         dialog.remove();

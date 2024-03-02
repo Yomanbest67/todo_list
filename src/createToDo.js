@@ -89,6 +89,7 @@ function dropdown (todo) {
     const dateBtn = document.createElement('button');
     const prioBtn = document.createElement('button');
     const projBtn = document.createElement('button');
+    const deleteBtn = document.createElement('button');
 
     const elements = [nameBtn, descBtn, dateBtn, prioBtn, projBtn];
 
@@ -99,6 +100,7 @@ function dropdown (todo) {
     dateBtn.textContent = 'Change Due Date';
     prioBtn.textContent = 'Change Priority';
     projBtn.textContent = 'Change Project';
+    deleteBtn.textContent = 'Delete';
 
     // ClassList
     taskDiv.classList.add('dropdown');
@@ -109,11 +111,17 @@ function dropdown (todo) {
         button.addEventListener('click', () => {dropdownDialog(button, todo)});
     }
 
+    deleteBtn.addEventListener('click', () => {
+        projectsRemove(todo);
+        updateScreen();
+    });
+
     // Append
     for (let element of elements){
         dropContent.appendChild(element);
     }
 
+    dropContent.appendChild(deleteBtn);
     taskDiv.appendChild(hoverBtn);
     taskDiv.appendChild(dropContent);
 

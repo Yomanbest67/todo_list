@@ -1,7 +1,7 @@
 import css from './style.css';
 import {createObject, createTodoDiv, toDo} from './createToDo.js';
 import {createProjectDiv, createProject, Project, projectsPush} from './createProject.js';
-import {systemCheck, populateStorage} from './localStorage.js';
+import {systemCheck, populateStorage, setObjects} from './localStorage.js';
 
 
 const tasks = document.querySelector('.tasks');
@@ -10,11 +10,15 @@ const projectsDiv = document.querySelector('.projects');
 
 
 
-const defaultProj = new Project('Default', 'Default list of Todos');
-const projects = [defaultProj];
-let selectedProject = defaultProj;
+// const defaultProj = new Project('Default', 'Default list of Todos');
+const projects = [];
+let selectedProject;
 
 systemCheck();
+
+if(projects){
+    selectedProject = projects[0];
+}
 
 
 const taskDialog = document.querySelector('.taskDialog');
@@ -125,13 +129,17 @@ function clearScreen () {
 function updateScreen () {
     clearScreen();
 
-    for (let object of selectedProject.todos){
-        tasks.appendChild(createTodoDiv(object));
-    };
-
-    for (let project of projects){
-        projectsDiv.appendChild(createProjectDiv(project));
-    };
+    if (selectedProject != null){
+        for (let object of selectedProject.todos){
+            tasks.appendChild(createTodoDiv(object));
+        };
+    }
+    
+    if (projects.length > 0){
+        for (let project of projects){
+            projectsDiv.appendChild(createProjectDiv(project));
+        };
+    }
 };
 
 function updateToDoProjectsList () {
@@ -162,5 +170,19 @@ function newProjectPush(project) {
     projects.push(project);
 }
 
+function removeProject(project){
+    if (selectedProject == project){
+        selectedProject = null;
+        while (document.querySelector(".task").firstChild){
+            document.querySelector(".task").firstChild.remove();
+        }
+    }
 
-export {projects, tasks, updateScreen, clearScreen, selectProject, updateToDoProjectsList, projectsDiv, newProjectPush}
+    projects.splice(projects.indexOf(project), 1);
+
+
+    updateScreen();
+}
+
+
+export {projects, tasks, updateScreen, clearScreen, selectProject, updateToDoProjectsList, projectsDiv, newProjectPush, removeProject}
