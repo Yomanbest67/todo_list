@@ -1,9 +1,84 @@
+html, body {
+    height: 100%;
+}
+/* App */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(53, 55, 75);
+    box-shadow: 0px 15px 10px -15px #111;
+    color: white;
+    z-index: 2;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 0;
+    gap: 15px;
+    background-color: rgb(52, 73, 85);
+    padding: 15px;
+    height: 100%;
+}
+
+.side-buttons {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.side-buttons > button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(111, 159, 172);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.568);
+}
+
+.side-buttons > button:hover {
+    background-color: rgb(87, 125, 136);
+}
+
+.projects {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.content {
+    flex: 3 1 0;
+    display: flex;
+    align-items: center;
+}
+
+.tasks {
+    flex: 3 1 0;
+    border: 1px solid black;
+    background-color: rgb(80, 114, 123);
+    height: 100%;
+    width: 100%;
+    padding: 15px;
+}
+
 .task {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     border: 2px solid black;
     border-radius: 5px;
+    margin: 8px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.568);
 }
 
 .projForm {
@@ -15,11 +90,15 @@
 .project {
     display: flex;
     border: 1px solid black;
+    border-left: 4px solid rgb(127, 231, 8);
     border-radius: 5px;
     cursor: pointer;
     align-items: center;
-    gap: 500px;
+    justify-content: space-between;
+    background-color: rgb(120, 160, 131);
+    width: 400px;
     padding: 20px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.548);
 }
 
 .project:hover {
@@ -55,4 +134,13 @@
 .dropdown-content button:hover {
     color: #FFFFFF;
     background-color: #00A4BD;
+}
+
+/* Footer */
+
+.footer {
+    background-color: rgb(53, 55, 75);
+    display: flex;
+    justify-content: center;
+    color: white;
 }

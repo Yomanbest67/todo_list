@@ -80,6 +80,7 @@ function createToDoDialog() {
     // ClassLists
     projDialog.classList.add('projDialog');
     projForm.classList.add('projForm');
+    newProjBtn.classList.add('newProject');
 
     // Text Content
     newProjBtn.textContent = 'New Project';
@@ -108,13 +109,14 @@ function createToDoDialog() {
     });
 
     // Finish Up and Append
+    
     for (let element of formElements){
         projForm.appendChild(element);
     };
 
+    document.querySelector('.side-buttons').appendChild(newProjBtn);
     projDialog.appendChild(closeBtn);
     projDialog.appendChild(projForm);
-    sidebar.appendChild(newProjBtn);
     sidebar.appendChild(projDialog);
 })();
 

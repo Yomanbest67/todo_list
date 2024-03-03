@@ -44,6 +44,7 @@ function createProjectDiv(project) {
 
     projDiv.addEventListener('click', () => {
         selectProject(project)
+        projDiv.classList.add('selected');
         updateScreen();
     });
 
