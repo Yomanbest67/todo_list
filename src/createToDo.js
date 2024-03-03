@@ -1,6 +1,7 @@
-import { updateScreen, projects } from "./index.js";
+import { updateScreen, projects, selectProject } from "./index.js";
 import { projectsPush, projectsRemove } from "./createProject.js";
 import { populateStorage } from "./localStorage.js";
+import { uniqueID, checkDueDate } from "./dateStuff.js";
 
 const tasks = document.querySelector('.tasks');
 
@@ -11,6 +12,7 @@ class toDo {
         this.dueDate = dueDate;
         this.priority = priority;
         this.project = project;
+        this.id = uniqueID();
     }
 
     changeTitle(title) {
@@ -44,9 +46,11 @@ function createTodoDiv (todo) {
     const taskDesc = document.createElement('p');
     const taskDescDiv = document.createElement('div');
     const taskDue = document.createElement('div');
+    const taskPriority = document.createElement('div');
     const dropDown = dropdown(todo);
 
     taskDiv.classList.add('task');
+    taskDiv.id = todo.id;
     taskTitle.classList.add('title');
     taskDesc.classList.add('desc');
     taskDue.classList.add('date');
@@ -54,12 +58,14 @@ function createTodoDiv (todo) {
     taskTitle.textContent = todo.title;
     taskDesc.textContent = todo.description;
     taskDue.textContent = todo.dueDate;
+    taskPriority.textContent = todo.priority;
 
     taskDescDiv.appendChild(taskTitle);
     taskDescDiv.appendChild(taskDesc);
 
     taskDiv.appendChild(taskDescDiv);
     taskDiv.appendChild(taskDue);
+    taskDiv.appendChild(taskPriority);
     taskDiv.appendChild(dropDown);
 
     return taskDiv
@@ -71,8 +77,10 @@ function createObject(title, description, dueDate, priority, project) {
     for (let object of projects) {
         if (object.name == project.value) {
             object.pushTodo(todo);
+            selectProject(object);
         }
     };
+
 
     updateScreen();
     populateStorage();
@@ -113,6 +121,7 @@ function dropdown (todo) {
 
     deleteBtn.addEventListener('click', () => {
         projectsRemove(todo);
+        populateStorage();
         updateScreen();
     });
 
@@ -190,6 +199,8 @@ function dropdownDialog (button, todo) {
                 todo.changeProject(dialogInput.value);
                 break;
         }
+
+        populateStorage();
         updateScreen();
         dialog.remove();
     });
@@ -205,5 +216,30 @@ function dropdownDialog (button, todo) {
     dialog.showModal();
 }
 
+function getToDoDiv (todo) {
+    return document.querySelector(`#${CSS.escape(todo.id)}`);
+    // CSS Escape is needed in order to use pure numerical values.
+}
 
-export {toDo, createTodoDiv, createObject}
+function updateDivColor (todo) {
+    const todoDiv = getToDoDiv(todo);
+    const due = checkDueDate(todo);
+    
+
+    switch (due) {
+        case 'due':
+            todoDiv.style.backgroundColor = "green";
+            break;
+
+        case 'today':
+            todoDiv.style.backgroundColor = "yellow";
+            break;
+
+        case "overdue":
+            todoDiv.style.backgroundColor = "red";
+            break;
+    }
+}
+
+
+export {toDo, createTodoDiv, createObject, getToDoDiv, updateDivColor}

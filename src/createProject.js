@@ -1,5 +1,6 @@
 import { projects, updateScreen, selectProject, updateToDoProjectsList, removeProject } from "./index.js";
 import { createTodoDiv } from "./createToDo.js";
+import { populateStorage } from "./localStorage.js";
 
 class Project {
     constructor(name, description) {
@@ -89,7 +90,7 @@ function dropDown (project) {
         button.addEventListener('click', () => dropDownDialog(button, project));
     };
 
-    deleteBtn.addEventListener('click', () => removeProject(project));
+    deleteBtn.addEventListener('click', () => {removeProject(project); populateStorage();});
 
     // Append
     dropContent.appendChild(nameBtn);
@@ -134,6 +135,7 @@ function dropDownDialog (button, project) {
                 project.changeDescription(dialogInput.value);
                 break;
         }
+        populateStorage();
         updateScreen();
         dialog.remove();
     });

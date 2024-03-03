@@ -1,7 +1,8 @@
 import css from './style.css';
-import {createObject, createTodoDiv, toDo} from './createToDo.js';
+import {createObject, createTodoDiv, updateDivColor} from './createToDo.js';
 import {createProjectDiv, createProject, Project, projectsPush} from './createProject.js';
 import {systemCheck, populateStorage, setObjects} from './localStorage.js';
+import { sortByDate, sortByPriority } from './dateStuff.js';
 
 
 const tasks = document.querySelector('.tasks');
@@ -103,6 +104,7 @@ function createToDoDialog() {
         createProject(inputName.value, inputDesc.value);
         updateToDoProjectsList();
         projDialog.close();
+        populateStorage();
     });
 
     // Finish Up and Append
@@ -129,9 +131,13 @@ function clearScreen () {
 function updateScreen () {
     clearScreen();
 
-    if (selectedProject != null){
-        for (let object of selectedProject.todos){
-            tasks.appendChild(createTodoDiv(object));
+    if (selectedProject != null && selectedProject.todos && projects.includes(selectedProject)){
+
+        sortByPriority(selectedProject.todos);
+
+        for (let todo of selectedProject.todos){
+            tasks.appendChild(createTodoDiv(todo));
+            updateDivColor(todo);
         };
     }
     
@@ -173,9 +179,6 @@ function newProjectPush(project) {
 function removeProject(project){
     if (selectedProject == project){
         selectedProject = null;
-        while (document.querySelector(".task").firstChild){
-            document.querySelector(".task").firstChild.remove();
-        }
     }
 
     projects.splice(projects.indexOf(project), 1);

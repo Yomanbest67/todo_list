@@ -14,9 +14,21 @@ function systemCheck() {
 function populateStorage() {
     localStorage.removeItem("projectList");
 
+    projectCheck();
+
     for (let project of projects){
         if (localStorage.getItem(project) === null){
             window.localStorage.setItem(project.name, JSON.stringify(project))
+        }
+    }
+}
+
+function projectCheck() {
+    for (const key of Object.keys(localStorage)){
+        for (const project of projects){
+            if (key != project.name){
+                window.localStorage.removeItem(key);
+            }
         }
     }
 }
