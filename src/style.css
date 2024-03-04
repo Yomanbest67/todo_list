@@ -1,29 +1,206 @@
+html, body {
+    height: 100%;
+}
+/* App */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.app button {
+    background-color: #00A4BD;
+    border-radius: 5px;
+}
+
+
+.header {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(53, 55, 75);
+    box-shadow: 0px 15px 10px -15px #111;
+    color: white;
+    z-index: 2;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 0;
+    gap: 15px;
+    background-color: rgb(52, 73, 85);
+    padding: 15px;
+    height: 100%;
+}
+
+.side-buttons {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.side-buttons > button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(111, 159, 172);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.568);
+    font-weight: bold;
+}
+
+.side-buttons > button:hover {
+    background-color: rgb(87, 125, 136);
+}
+
+.projects {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.project.selected {
+    background-color: rgb(240, 236, 236);
+}
+
+.content {
+    flex: 3 1 0;
+    display: flex;
+    align-items: center;
+}
+
+.tasks {
+    flex: 3 1 0;
+    border: 1px solid black;
+    background-color: rgb(80, 114, 123);
+    height: 100%;
+    width: 100%;
+    padding: 15px;
+}
+
 .task {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     border: 2px solid black;
     border-radius: 5px;
+    background-color: rgb(29, 133, 124);
+    margin: 8px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.568);
+}
+
+.taskForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(7, 1fr);
+}
+
+.taskForm label {
+    grid-column: 1 / 2;
+}
+
+.taskForm .close {
+    grid-column: 2 / 3;
+    width: 20%;
+    justify-self: end;
+}
+
+.taskForm .taskCreate {
+    grid-column: 1 / 3;
+}
+
+.projDialog, .taskDialog, .changeDialog {
+    border-radius: 5px;
+    background-color: rgb(120, 160, 131);
+}
+
+.projForm, .taskForm, .changeDialog > div {
+    padding: 20px;
+    color: white;
+    font-size: 25px;
+    gap: 10px;
 }
 
 .projForm {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr);
+}
+
+.projForm .projClose {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    width: 20%;
+    justify-self: end;
+}
+
+.projForm label:nth-of-type(1) {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+.projForm input:nth-of-type(1) {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+.projForm label:nth-of-type(2) {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+}
+
+.projForm input:nth-of-type(2) {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+}
+
+.projForm .projAdd {
+    grid-column: 1 / 3;
+    grid-row: 4 / 5;
 }
 
 .project {
     display: flex;
     border: 1px solid black;
+    border-left: 4px solid rgb(47, 230, 214);
     border-radius: 5px;
     cursor: pointer;
     align-items: center;
-    gap: 500px;
+    justify-content: space-between;
+    background-color: rgb(120, 160, 131);
+    width: 400px;
     padding: 20px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.548);
 }
 
 .project:hover {
     background-color: rgb(240, 236, 236);
+}
+
+.changeDialog > div {
+    padding: 20px;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.changeDialog > div label {
+    grid-column: 1 / 2;
+}
+
+.changeDialog > div > button:first-of-type {
+    grid-column: 2 / 3;
+    width: 20%;
+    justify-self: right;
+}
+
+.changeDialog > div > button:nth-of-type(2) {
+    grid-column: 1 / 3;
 }
 
 /* DropDown Menu */
@@ -55,4 +232,13 @@
 .dropdown-content button:hover {
     color: #FFFFFF;
     background-color: #00A4BD;
+}
+
+/* Footer */
+
+.footer {
+    background-color: rgb(53, 55, 75);
+    display: flex;
+    justify-content: center;
+    color: white;
 }

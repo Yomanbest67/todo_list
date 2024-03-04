@@ -1,14 +1,27 @@
 import css from './style.css';
-import {createObject, createTodoDiv, toDo} from './createToDo.js';
-import {createProjectDiv, createProject, Project} from './createProject.js';
+import {createObject, createTodoDiv, updateDivColor} from './createToDo.js';
+import {createProjectDiv, createProject, Project, projectsPush} from './createProject.js';
+import {systemCheck, populateStorage, setObjects} from './localStorage.js';
+import { sortByDate, sortByPriority } from './dateStuff.js';
+import { addSelectedClass, tasksEmptyDiv } from './moreUIStuff.js';
 
 
 const tasks = document.querySelector('.tasks');
 const sidebar = document.querySelector('.sidebar');
 const projectsDiv = document.querySelector('.projects');
-const defaultProj = new Project('Default', 'Default list of Todos');
-const projects = [defaultProj];
-let selectedProject = defaultProj;
+
+
+
+// const defaultProj = new Project('Default', 'Default list of Todos');
+const projects = [];
+let selectedProject;
+
+systemCheck();
+
+if(projects){
+    selectedProject = projects[0];
+}
+
 
 const taskDialog = document.querySelector('.taskDialog');
 
@@ -19,7 +32,13 @@ updateScreen();
     const newTaskBtn = document.querySelector('.newTask');
 
     newTaskBtn.addEventListener('click', () => {
-        taskDialog.showModal();
+        const projects = document.querySelector('.projects');
+
+        if (!projects.firstChild){
+            alert("You must create a project first! Click New Project on the left.");
+        } else {
+            taskDialog.showModal(); 
+        }
     });
 
 })();
@@ -41,6 +60,7 @@ function createToDoDialog() {
 
     addTaskBtn.addEventListener('click', (event) => {
         event.preventDefault();
+        
         createObject(title, description, dueDate, priority, selectProjectList);
         taskDialog.close();
     });
@@ -63,11 +83,14 @@ function createToDoDialog() {
     const inputName = document.createElement('input');
     const labelDesc = document.createElement('label');
     const inputDesc = document.createElement('input');
-    const formElements = [labelName, inputName, labelDesc, inputDesc, addProjBtn];
+    const formElements = [labelName, inputName, labelDesc, inputDesc, addProjBtn, closeBtn];
 
     // ClassLists
     projDialog.classList.add('projDialog');
     projForm.classList.add('projForm');
+    newProjBtn.classList.add('newProject');
+    closeBtn.classList.add('projClose');
+    addProjBtn.classList.add('projAdd');
 
     // Text Content
     newProjBtn.textContent = 'New Project';
@@ -92,16 +115,17 @@ function createToDoDialog() {
         createProject(inputName.value, inputDesc.value);
         updateToDoProjectsList();
         projDialog.close();
+        populateStorage();
     });
 
     // Finish Up and Append
+    
     for (let element of formElements){
         projForm.appendChild(element);
     };
 
-    projDialog.appendChild(closeBtn);
+    document.querySelector('.side-buttons').appendChild(newProjBtn);
     projDialog.appendChild(projForm);
-    sidebar.appendChild(newProjBtn);
     sidebar.appendChild(projDialog);
 })();
 
@@ -118,13 +142,26 @@ function clearScreen () {
 function updateScreen () {
     clearScreen();
 
-    for (let object of selectedProject.todos){
-        tasks.appendChild(createTodoDiv(object));
-    };
+    if (selectedProject != null && selectedProject.todos && projects.includes(selectedProject)){
 
-    for (let project of projects){
-        projectsDiv.appendChild(createProjectDiv(project));
-    };
+        sortByPriority(selectedProject.todos);
+
+        for (let todo of selectedProject.todos){
+            tasks.appendChild(createTodoDiv(todo));
+            updateDivColor(todo);
+        };
+    }
+    
+    if (projects.length > 0){
+        for (let project of projects){
+            projectsDiv.appendChild(createProjectDiv(project));
+        };
+        addSelectedClass();
+    }
+
+    if (!tasks.firstChild) {
+        tasksEmptyDiv();
+    }
 };
 
 function updateToDoProjectsList () {
@@ -149,5 +186,28 @@ function selectProject(object) {
     selectedProject = object;
 }
 
+////// Push new Project
 
-export {projects, tasks, updateScreen, clearScreen, selectProject, updateToDoProjectsList, projectsDiv}
+function newProjectPush(project) {
+    projects.push(project);
+}
+
+function removeProject(project){
+    if (selectedProject == project){
+        selectedProject = null;
+    }
+
+    projects.splice(projects.indexOf(project), 1);
+
+
+    updateScreen();
+}
+
+function getSelectedProject() {
+    if (selectedProject != null && selectedProject != undefined){
+        return selectedProject;
+    }
+}
+
+
+export {projects, tasks, updateScreen, clearScreen, selectProject, updateToDoProjectsList, projectsDiv, newProjectPush, removeProject, getSelectedProject}

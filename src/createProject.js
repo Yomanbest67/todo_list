@@ -1,11 +1,15 @@
-import { projects, updateScreen, selectProject, updateToDoProjectsList } from "./index.js";
+import { projects, updateScreen, selectProject, updateToDoProjectsList, removeProject } from "./index.js";
 import { createTodoDiv } from "./createToDo.js";
+import { populateStorage } from "./localStorage.js";
+import { uniqueID } from "./dateStuff.js";
+import { addSelectedClass } from "./moreUIStuff.js";
 
 class Project {
     constructor(name, description) {
         this.name = name;
         this.description = description;
         this.todos = [];
+        this.id =  uniqueID();
     }
 
     pushTodo(todo) {
@@ -38,11 +42,12 @@ function createProjectDiv(project) {
     let optionsBtn = dropDown(project);
 
     projDiv.classList.add('project');
+    projDiv.id = project.id;
     projTitle.textContent = project.name;
     projDesc.textContent = project.description;
 
     projDiv.addEventListener('click', () => {
-        selectProject(project)
+        selectProject(project);
         updateScreen();
     });
 
@@ -72,11 +77,13 @@ function dropDown (project) {
     const dropContent = document.createElement('div');
     const nameBtn = document.createElement('button');
     const descBtn = document.createElement('button');
+    const deleteBtn = document.createElement('button');
 
     // Text Content
     hoverBtn.textContent = 'Options';
     nameBtn.textContent = 'Change Name';
     descBtn.textContent = 'Change Description';
+    deleteBtn.textContent = 'Delete';
 
     // ClassList
     taskDiv.classList.add('dropdown');
@@ -87,9 +94,12 @@ function dropDown (project) {
         button.addEventListener('click', () => dropDownDialog(button, project));
     };
 
+    deleteBtn.addEventListener('click', () => {removeProject(project); populateStorage();});
+
     // Append
     dropContent.appendChild(nameBtn);
     dropContent.appendChild(descBtn);
+    dropContent.appendChild(deleteBtn);
 
     taskDiv.appendChild(hoverBtn);
     taskDiv.appendChild(dropContent);
@@ -105,6 +115,9 @@ function dropDownDialog (button, project) {
     const dialogInput = document.createElement('input');
     const dialogClose = document.createElement('button');
     const dialogAdd = document.createElement('button');
+
+    // ClassList
+    dialog.classList.add('changeDialog');
 
     // Text Content
     dialogLabel.textContent = button.textContent;
@@ -128,8 +141,8 @@ function dropDownDialog (button, project) {
             case 'Change Description':
                 project.changeDescription(dialogInput.value);
                 break;
-
         }
+        populateStorage();
         updateScreen();
         dialog.remove();
     });
@@ -147,13 +160,12 @@ function dropDownDialog (button, project) {
 
 ////// Global Index.JS Projects iterating functions.
 function projectsPush(item) {
-
+    
     for (let object of projects) {
         if (object.name == item.project) {
             object.pushTodo(item);
         }
     }
-
 }
 
 function projectsRemove(item) {
@@ -166,4 +178,8 @@ function projectsRemove(item) {
 
 }
 
-export {Project, createProjectDiv, createProject, projectsPush, projectsRemove}
+function getProjectDiv (project) {
+    return document.querySelector(`#${CSS.escape(project.id)}`);
+}
+
+export {Project, createProjectDiv, createProject, projectsPush, projectsRemove, getProjectDiv}
