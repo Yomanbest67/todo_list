@@ -152,6 +152,9 @@ function dropdownDialog (button, todo) {
     dialogAdd.textContent = 'Change';
     dialogClose.textContent = 'X';
 
+    // ClassList
+    dialog.classList.add('changeDialog');
+
     // Function
     switch (button.textContent) {
         case 'Change Due Date':
@@ -228,15 +231,15 @@ function updateDivColor (todo) {
 
     switch (due) {
         case 'due':
-            todoDiv.style.backgroundColor = "green";
+            todoDiv.style.borderLeft = "3px solid #07ed44";
             break;
 
         case 'today':
-            todoDiv.style.backgroundColor = "yellow";
+            todoDiv.style.borderLeft = "3px solid yellow";
             break;
 
         case "overdue":
-            todoDiv.style.backgroundColor = "red";
+            todoDiv.style.borderLeft = "3px solid red";
             break;
     }
 }

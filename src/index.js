@@ -3,6 +3,7 @@ import {createObject, createTodoDiv, updateDivColor} from './createToDo.js';
 import {createProjectDiv, createProject, Project, projectsPush} from './createProject.js';
 import {systemCheck, populateStorage, setObjects} from './localStorage.js';
 import { sortByDate, sortByPriority } from './dateStuff.js';
+import { addSelectedClass, tasksEmptyDiv } from './moreUIStuff.js';
 
 
 const tasks = document.querySelector('.tasks');
@@ -31,7 +32,13 @@ updateScreen();
     const newTaskBtn = document.querySelector('.newTask');
 
     newTaskBtn.addEventListener('click', () => {
-        taskDialog.showModal();
+        const projects = document.querySelector('.projects');
+
+        if (!projects.firstChild){
+            alert("You must create a project first! Click New Project on the left.");
+        } else {
+            taskDialog.showModal(); 
+        }
     });
 
 })();
@@ -53,6 +60,7 @@ function createToDoDialog() {
 
     addTaskBtn.addEventListener('click', (event) => {
         event.preventDefault();
+        
         createObject(title, description, dueDate, priority, selectProjectList);
         taskDialog.close();
     });
@@ -75,12 +83,14 @@ function createToDoDialog() {
     const inputName = document.createElement('input');
     const labelDesc = document.createElement('label');
     const inputDesc = document.createElement('input');
-    const formElements = [labelName, inputName, labelDesc, inputDesc, addProjBtn];
+    const formElements = [labelName, inputName, labelDesc, inputDesc, addProjBtn, closeBtn];
 
     // ClassLists
     projDialog.classList.add('projDialog');
     projForm.classList.add('projForm');
     newProjBtn.classList.add('newProject');
+    closeBtn.classList.add('projClose');
+    addProjBtn.classList.add('projAdd');
 
     // Text Content
     newProjBtn.textContent = 'New Project';
@@ -115,7 +125,6 @@ function createToDoDialog() {
     };
 
     document.querySelector('.side-buttons').appendChild(newProjBtn);
-    projDialog.appendChild(closeBtn);
     projDialog.appendChild(projForm);
     sidebar.appendChild(projDialog);
 })();
@@ -147,6 +156,11 @@ function updateScreen () {
         for (let project of projects){
             projectsDiv.appendChild(createProjectDiv(project));
         };
+        addSelectedClass();
+    }
+
+    if (!tasks.firstChild) {
+        tasksEmptyDiv();
     }
 };
 
@@ -189,5 +203,11 @@ function removeProject(project){
     updateScreen();
 }
 
+function getSelectedProject() {
+    if (selectedProject != null && selectedProject != undefined){
+        return selectedProject;
+    }
+}
 
-export {projects, tasks, updateScreen, clearScreen, selectProject, updateToDoProjectsList, projectsDiv, newProjectPush, removeProject}
+
+export {projects, tasks, updateScreen, clearScreen, selectProject, updateToDoProjectsList, projectsDiv, newProjectPush, removeProject, getSelectedProject}

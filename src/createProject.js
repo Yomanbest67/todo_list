@@ -1,12 +1,15 @@
 import { projects, updateScreen, selectProject, updateToDoProjectsList, removeProject } from "./index.js";
 import { createTodoDiv } from "./createToDo.js";
 import { populateStorage } from "./localStorage.js";
+import { uniqueID } from "./dateStuff.js";
+import { addSelectedClass } from "./moreUIStuff.js";
 
 class Project {
     constructor(name, description) {
         this.name = name;
         this.description = description;
         this.todos = [];
+        this.id =  uniqueID();
     }
 
     pushTodo(todo) {
@@ -39,12 +42,12 @@ function createProjectDiv(project) {
     let optionsBtn = dropDown(project);
 
     projDiv.classList.add('project');
+    projDiv.id = project.id;
     projTitle.textContent = project.name;
     projDesc.textContent = project.description;
 
     projDiv.addEventListener('click', () => {
-        selectProject(project)
-        projDiv.classList.add('selected');
+        selectProject(project);
         updateScreen();
     });
 
@@ -113,6 +116,9 @@ function dropDownDialog (button, project) {
     const dialogClose = document.createElement('button');
     const dialogAdd = document.createElement('button');
 
+    // ClassList
+    dialog.classList.add('changeDialog');
+
     // Text Content
     dialogLabel.textContent = button.textContent;
     dialogAdd.textContent = 'Change';
@@ -172,4 +178,8 @@ function projectsRemove(item) {
 
 }
 
-export {Project, createProjectDiv, createProject, projectsPush, projectsRemove}
+function getProjectDiv (project) {
+    return document.querySelector(`#${CSS.escape(project.id)}`);
+}
+
+export {Project, createProjectDiv, createProject, projectsPush, projectsRemove, getProjectDiv}
